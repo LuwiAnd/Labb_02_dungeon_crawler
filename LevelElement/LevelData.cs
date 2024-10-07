@@ -33,27 +33,31 @@ namespace Labb_02_dungeon_crawler
                         Console.WriteLine(line);
                         for(int x = 0; x < line.Length; x++)
                         {
-                            currentPosition = new int[] { x, y };
+                            //currentPosition = new int[] { x, y };
                             if (line[x] == GeneralDungeonFunctions.wallChar)
                             {
                                 //le = new Wall({ x, y });
                                 //this._elements.Add(new Wall(new int[]{ x, y }));
-                                this._elements.Add(new Wall(currentPosition));
+                                //this._elements.Add(new Wall(currentPosition));
+                                this._elements.Add(new Wall(x, y));
                                 //Console.WriteLine($"A new wall was added");
                             }
                             if (line[x] == GeneralDungeonFunctions.ratChar)
                             {
-                                this._elements.Add(new Rat(new int[] { x, y }));
+                                //this._elements.Add(new Rat(new int[] { x, y }));
+                                this._elements.Add(new Rat(x, y));
                                 //Console.WriteLine($"A new rat was added at position x = {x}, y = {y}.");
                             }
                             if (line[x] == GeneralDungeonFunctions.snakeChar)
                             {
-                                this._elements.Add(new Snake(new int[] { x, y }));
+                                //this._elements.Add(new Snake(new int[] { x, y }));
+                                this._elements.Add(new Snake(x, y));
                                 //Console.WriteLine($"A new snake was added at position x = {x}, y = {y}.");
                             }
                             if (line[x] == GeneralDungeonFunctions.playerChar)
                             {
-                                this.hero = new Hero(new int[] { x, y });
+                                //this.hero = new Hero(new int[] { x, y });
+                                this.hero = new Hero(x, y);
                                 
                                 //Console.WriteLine($"A new hero was added at position x = {x}, y = {y}.");
                             }

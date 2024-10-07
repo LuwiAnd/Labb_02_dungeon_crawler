@@ -8,12 +8,21 @@ namespace Labb_02_dungeon_crawler
 {
     internal class Hero : LevelElement
     {
-        private int[] _position;
+        //private Position _position;
+        //public Position Position { get; private set; }
 
-        public override int[] Position
+
+        //private int[] _position;
+        //public override int[] Position
+        //{
+        //    get { return this._position; }
+        //    // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
+        //}
+
+        //public override Position Position { get => base.Position; protected set => base.Position = value; }
+        private void SetPosition(Position p)
         {
-            get { return this._position; }
-            // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
+            this.Position = p;
         }
         public string Type { get; set; }
         public double HP { get; set; }
@@ -26,9 +35,11 @@ namespace Labb_02_dungeon_crawler
             Console.WriteLine("Uppdaterar spelaren");
         }
 
-        public Hero(int[] position)
+        //public Hero(int[] position)
+        public Hero(int positionX, int positionY)
         {
-            this._position = position;
+            //this._position = position;
+            this.Position = new Position(x: positionX, y: positionY);
             this.HP = 100;
             this.Type = "hero";
 
@@ -39,7 +50,8 @@ namespace Labb_02_dungeon_crawler
         public override void Draw()
         {
             (int left, int top) = Console.GetCursorPosition();
-            Console.SetCursorPosition(this._position[0] + GeneralDungeonFunctions.mapDisplacementX, this._position[1] + GeneralDungeonFunctions.mapDisplacementY);
+            //Console.SetCursorPosition(this._position[0] + GeneralDungeonFunctions.mapDisplacementX, this._position[1] + GeneralDungeonFunctions.mapDisplacementY);
+            Console.SetCursorPosition(this.Position.X + GeneralDungeonFunctions.mapDisplacementX, this.Position.Y + GeneralDungeonFunctions.mapDisplacementY);
             Console.ForegroundColor = this.Color;
             Console.Write(this.Appearance.ToString());
             Console.ForegroundColor = ConsoleColor.White;
@@ -49,62 +61,7 @@ namespace Labb_02_dungeon_crawler
 
         public void Update(List<LevelElement> elements)
         {
-            //bool heroHasSpaceAbove = true;
-            //bool heroHasSpaceBelow = true;
-            //bool heroHasSpaceOnLeftSide = true;
-            //bool heroHasSpaceOnRightSide = true;
-
-            //bool heroHasEnemyAbove = true;
-            //bool heroHasEnemyBelow = true;
-            //bool heroHasEnemyOnLeftSide = true;
-            //bool heroHasEnemyOnRightSide = true;
-
-            //foreach (var element in elements)
-            //{
-            //    if (element.type == "wall")
-            //    {
-            //        if (this.Position[0] == element.Position[0] && this.Position[1] == (element.Position[1] - 1))
-            //        {
-            //            heroHasSpaceAbove = false;
-            //        }
-
-            //        if (this.Position[0] == element.Position[0] && this.Position[1] == (element.Position[1] + 1))
-            //        {
-            //            heroHasSpaceBelow = false;
-            //        }
-
-            //        if (this.Position[0] == (element.Position[0] - 1) && this.Position[1] == element.Position[1])
-            //        {
-            //            heroHasSpaceOnLeftSide = false;
-            //        }
-
-            //        if (this.Position[0] == (element.Position[0] + 1) && this.Position[1] == element.Position[1])
-            //        {
-            //            heroHasSpaceOnRightSide = false;
-            //        }
-            //    }else if(element.type == "rat" || element.type == "snake")
-            //    {
-            //        if (this.Position[0] == element.Position[0] && this.Position[1] == (element.Position[1] - 1))
-            //        {
-            //            heroHasEnemyAbove = false;
-            //        }
-
-            //        if (this.Position[0] == element.Position[0] && this.Position[1] == (element.Position[1] + 1))
-            //        {
-            //            heroHasEnemyBelow = false;
-            //        }
-
-            //        if (this.Position[0] == (element.Position[0] - 1) && this.Position[1] == element.Position[1])
-            //        {
-            //            heroHasEnemyOnLeftSide = false;
-            //        }
-
-            //        if (this.Position[0] == (element.Position[0] + 1) && this.Position[1] == element.Position[1])
-            //        {
-            //            heroHasEnemyOnRightSide = false;
-            //        }
-            //    }
-            //}
+            
 
             //Console.WriteLine("AAAAA");
             ConsoleKeyInfo cki;
@@ -134,12 +91,13 @@ namespace Labb_02_dungeon_crawler
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
-                            if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] - 1))
+                            //if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] - 1))
+                            if (element.Position.X == this.Position.X && element.Position.Y == (this.Position.Y - 1))
                             {
+                                Console.WriteLine($"Found element above! Type: {element.type}");
                                 //heroHasElementAbove = true;
                                 if (element.type != "wall")
                                 {
-                                    okDirection = true;
                                     // Attack the enemy.
                                     // Enemy attacks back.
                                 }
@@ -147,12 +105,14 @@ namespace Labb_02_dungeon_crawler
                                 {
                                     okDirection = false;
                                 }
+                                break;
                             }
 
                         }
                         if (okDirection)
                         {
-                            this.Position[1]--;
+                            //this.Position.Y--;
+                            this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y - 1));
                         }
                     }
 
@@ -162,7 +122,7 @@ namespace Labb_02_dungeon_crawler
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
-                            if (element.Position[0] == (this.Position[0] - 1) && element.Position[1] == this.Position[1])
+                            if (element.Position.X == (this.Position.X - 1) && element.Position.Y == this.Position.Y)
                             {
                                 //heroHasElementAbove = true;
                                 if (element.type != "wall")
@@ -180,7 +140,8 @@ namespace Labb_02_dungeon_crawler
                         }
                         if (okDirection)
                         {
-                            this.Position[0]--;
+                            //this.Position[0]--;
+                            this.SetPosition(new Position(x: this.Position.X - 1, y: this.Position.Y));
                         }
                     }
                     if (cki.Key == ConsoleKey.DownArrow)
@@ -189,7 +150,8 @@ namespace Labb_02_dungeon_crawler
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
-                            if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] + 1))
+                            //if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] + 1))
+                            if (element.Position.X == this.Position.X && element.Position.Y == (this.Position.Y + 1))
                             {
                                 //heroHasElementAbove = true;
                                 if (element.type != "wall")
@@ -207,7 +169,8 @@ namespace Labb_02_dungeon_crawler
                         }
                         if (okDirection)
                         {
-                            this.Position[1]++;
+                            //this.Position[1]++;
+                            this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y + 1));
                         }
                     }
                     if (cki.Key == ConsoleKey.RightArrow)
@@ -226,25 +189,25 @@ namespace Labb_02_dungeon_crawler
                             //Console.WriteLine(element.Position[0]);
                             //Console.WriteLine(element.Position[1]);
                             
-                            if (element.Position[0] == (this.Position[0] + 1) && element.Position[1] == this.Position[1])
+                            //if (element.Position[0] == (this.Position[0] + 1) && element.Position[1] == this.Position[1])
+                            if (element.Position.X == (this.Position.X + 1) && element.Position.Y == this.Position.Y)
                             {
-                                //heroHasElementAbove = true;
+                                okDirection = false;
                                 if (element.type != "wall")
                                 {
                                     okDirection = true;
                                     // Attack the enemy.
+                                    Attack((Enemy)element);
+
                                     // Enemy attacks back.
-                                }
-                                else
-                                {
-                                    okDirection = false;
                                 }
                             }
 
                         }
                         if (okDirection)
                         {
-                            this.Position[0]++;
+                            //this.Position[0]++;
+                            this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));
                         }
                     }
                 }
@@ -270,6 +233,21 @@ namespace Labb_02_dungeon_crawler
                 //    newDirection = "";
                 //}
             }
+        }
+
+        public void Attack(Enemy enemy)
+        {
+            int heroAttack = AttackDice.Throw();
+            int enemyDefence = enemy.DefenceDice.Throw();
+            int enemyDamage = heroAttack - enemyDefence;
+            bool enemyIsDead = false;
+            if(enemyDamage > 0) { enemyIsDead = enemy.Defend(enemyDamage); }
+            if (!enemyIsDead) { enemy.AttackHero(this); }
+        }
+
+        public int Defend(Enemy enemy)
+        {
+
         }
     }
 }

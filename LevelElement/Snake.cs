@@ -8,13 +8,13 @@ namespace Labb_02_dungeon_crawler
 {
     internal class Snake : Enemy
     {
-        private int[] _position;
+        //private int[] _position;
 
-        public override int[] Position
-        {
-            get { return this._position; }
-            // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
-        }
+        //public override int[] Position
+        //{
+        //    get { return this._position; }
+        //    // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
+        //}
         public string Type { get; set; }
         public double HP { get; set; }
 
@@ -26,9 +26,11 @@ namespace Labb_02_dungeon_crawler
             Console.WriteLine("Uppdaterar ormen");
         }
 
-        public Snake(int[] position)
+        //public Snake(int[] position)
+        public Snake(int positionX, int positionY)
         {
-            this._position = position;
+            //this._position = position;
+            this.Position = new Position(x: positionX, y: positionY);
             this.HP = 25;
             this.Type = "snake";
         }

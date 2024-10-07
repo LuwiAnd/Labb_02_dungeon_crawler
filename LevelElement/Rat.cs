@@ -8,6 +8,13 @@ namespace Labb_02_dungeon_crawler
 {
     internal class Rat : Enemy
     {
+        private int[] _position;
+
+        public override int[] Position
+        {
+            get { return this._position; }
+            // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
+        }
         public string Type { get; set; }
         public double HP { get; set; }
 
@@ -17,6 +24,18 @@ namespace Labb_02_dungeon_crawler
         public override void Update()
         {
             Console.WriteLine("Uppdaterar råttan");
+        }
+
+        public Rat(int[] position)
+        {
+            this._position = position;
+            this.HP = 10;
+            this.Type = "rat";
+        }
+
+        public override void Draw()
+        {
+            throw new NotImplementedException();
         }
     }
 }

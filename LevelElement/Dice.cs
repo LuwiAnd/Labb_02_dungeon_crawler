@@ -29,5 +29,10 @@ namespace Labb_02_dungeon_crawler
             }
             return sum;
         }
+
+        public override string ToString()
+        {
+            return this.numberOfDice + "d" + this.sidesPerDice + "+" + this.modifier;
+        }
     }
 }

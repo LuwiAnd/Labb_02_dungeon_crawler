@@ -15,11 +15,11 @@ namespace Labb_02_dungeon_crawler
         //    get { return this._position; }
         //    // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
         //}
-        public string Type { get; set; }
-        public double HP { get; set; }
+        //public string Type { get; set; }
+        //public double HP { get; set; }
 
-        Dice AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
-        Dice DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
+        //Dice AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
+        //Dice DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
 
         public override void Update()
         {
@@ -33,6 +33,8 @@ namespace Labb_02_dungeon_crawler
             this.Position = new Position(x: positionX, y: positionY);
             this.HP = 10;
             this.Type = "rat";
+            this.AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
+            this.DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
         }
 
         public override void Draw()

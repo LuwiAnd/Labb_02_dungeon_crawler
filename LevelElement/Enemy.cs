@@ -11,7 +11,7 @@ namespace Labb_02_dungeon_crawler
         //    get { return this._position; }
         //    // positionen får endast sättas av konstruktorn, eller av Update-funktionen.
         //}
-        public string Type { get; set; }
+        //public string Type { get; set; }
         public double HP { get; set; }
 
         public Dice AttackDice;
@@ -28,10 +28,12 @@ namespace Labb_02_dungeon_crawler
             return isDead;
         }
 
-        public virtual int AttackHero(Hero hero)
+        public virtual void AttackHero(Hero hero)
         {
             int attack = this.AttackDice.Throw();
-            int defence = hero.D
+            int defence = hero.DefenceDice.Throw();
+            int damage = attack - defence;
+            if(damage > 0) { hero.HP -= damage; }
         }
     }
 }

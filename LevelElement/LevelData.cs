@@ -73,5 +73,18 @@ namespace Labb_02_dungeon_crawler
             }
             this.hero.Draw();
         }
+
+        public void RemoveElements()
+        {
+            //foreach(var element in this.Elements)
+            foreach(var element in this.Elements.ToList())
+            {
+                if(element.Type == "rat" || element.Type == "snake")
+                {
+                    Enemy enemy = (Enemy)element;
+                    if(enemy.HP <= 0) { this.Elements.Remove(element); }
+                }
+            }
+        }
     }
 }

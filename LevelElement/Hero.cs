@@ -27,8 +27,8 @@ namespace Labb_02_dungeon_crawler
         public string Type { get; set; }
         public double HP { get; set; }
 
-        Dice AttackDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 2);
-        Dice DefenceDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 0);
+        public Dice AttackDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 2);
+        public Dice DefenceDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 0);
 
         public void Update()
         {
@@ -94,12 +94,14 @@ namespace Labb_02_dungeon_crawler
                             //if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] - 1))
                             if (element.Position.X == this.Position.X && element.Position.Y == (this.Position.Y - 1))
                             {
-                                Console.WriteLine($"Found element above! Type: {element.type}");
+                                Console.WriteLine($"Found element above! Type: {element.Type}");
                                 //heroHasElementAbove = true;
-                                if (element.type != "wall")
+                                if (element.Type != "wall")
                                 {
+                                    Enemy enemy = (Enemy)element;
                                     // Attack the enemy.
-                                    // Enemy attacks back.
+                                    Attack(enemy);
+                                    if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
                                 {
@@ -112,7 +114,8 @@ namespace Labb_02_dungeon_crawler
                         if (okDirection)
                         {
                             //this.Position.Y--;
-                            this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y - 1));
+                            //this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y - 1));
+                            this.Move("up");
                         }
                     }
 
@@ -125,11 +128,12 @@ namespace Labb_02_dungeon_crawler
                             if (element.Position.X == (this.Position.X - 1) && element.Position.Y == this.Position.Y)
                             {
                                 //heroHasElementAbove = true;
-                                if (element.type != "wall")
+                                if (element.Type != "wall")
                                 {
-                                    okDirection = true;
+                                    Enemy enemy = (Enemy)element;
                                     // Attack the enemy.
-                                    // Enemy attacks back.
+                                    Attack(enemy);
+                                    if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
                                 {
@@ -141,7 +145,8 @@ namespace Labb_02_dungeon_crawler
                         if (okDirection)
                         {
                             //this.Position[0]--;
-                            this.SetPosition(new Position(x: this.Position.X - 1, y: this.Position.Y));
+                            //this.SetPosition(new Position(x: this.Position.X - 1, y: this.Position.Y));
+                            this.Move("left");
                         }
                     }
                     if (cki.Key == ConsoleKey.DownArrow)
@@ -154,11 +159,12 @@ namespace Labb_02_dungeon_crawler
                             if (element.Position.X == this.Position.X && element.Position.Y == (this.Position.Y + 1))
                             {
                                 //heroHasElementAbove = true;
-                                if (element.type != "wall")
+                                if (element.Type != "wall")
                                 {
-                                    okDirection = true;
+                                    Enemy enemy = (Enemy)element;
                                     // Attack the enemy.
-                                    // Enemy attacks back.
+                                    Attack(enemy);
+                                    if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
                                 {
@@ -170,7 +176,8 @@ namespace Labb_02_dungeon_crawler
                         if (okDirection)
                         {
                             //this.Position[1]++;
-                            this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y + 1));
+                            //this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y + 1));
+                            this.Move("down");
                         }
                     }
                     if (cki.Key == ConsoleKey.RightArrow)
@@ -192,14 +199,16 @@ namespace Labb_02_dungeon_crawler
                             //if (element.Position[0] == (this.Position[0] + 1) && element.Position[1] == this.Position[1])
                             if (element.Position.X == (this.Position.X + 1) && element.Position.Y == this.Position.Y)
                             {
-                                okDirection = false;
-                                if (element.type != "wall")
+                                if (element.Type != "wall")
                                 {
-                                    okDirection = true;
+                                    Enemy enemy = (Enemy)element;
                                     // Attack the enemy.
-                                    Attack((Enemy)element);
-
-                                    // Enemy attacks back.
+                                    Attack(enemy);
+                                    if (enemy.HP > 0) { enemy.AttackHero(this); }
+                                }
+                                else
+                                {
+                                    okDirection = false;
                                 }
                             }
 
@@ -207,7 +216,8 @@ namespace Labb_02_dungeon_crawler
                         if (okDirection)
                         {
                             //this.Position[0]++;
-                            this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));
+                            //this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));
+                            this.Move("right");
                         }
                     }
                 }
@@ -240,14 +250,37 @@ namespace Labb_02_dungeon_crawler
             int heroAttack = AttackDice.Throw();
             int enemyDefence = enemy.DefenceDice.Throw();
             int enemyDamage = heroAttack - enemyDefence;
-            bool enemyIsDead = false;
-            if(enemyDamage > 0) { enemyIsDead = enemy.Defend(enemyDamage); }
-            if (!enemyIsDead) { enemy.AttackHero(this); }
+            if(enemyDamage > 0) { enemy.HP -= enemyDamage; }
         }
 
-        public int Defend(Enemy enemy)
+        public void Move(string direction)
         {
-
+            (int left, int top) = Console.GetCursorPosition();
+            Console.SetCursorPosition(this.Position.X + GeneralDungeonFunctions.mapDisplacementX, this.Position.Y + GeneralDungeonFunctions.mapDisplacementY);
+            Console.Write(' ');
+            if (direction == "up")
+            {
+                this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y - 1));
+                this.Draw();
+            }
+            else if(direction == "down")
+            {
+                this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y + 1));
+                this.Draw();
+            }
+            else if (direction == "left")
+            {
+                this.SetPosition(new Position(x: this.Position.X - 1, y: this.Position.Y));
+                this.Draw();
+            }
+            else if (direction == "right")
+            {
+                this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));
+                this.Draw();
+            }
+            Console.SetCursorPosition(left, top);
         }
+
+        
     }
 }

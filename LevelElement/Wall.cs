@@ -42,7 +42,7 @@ namespace Labb_02_dungeon_crawler
             this.Color = ConsoleColor.White;
             //this.Position = position;
             this.Position = new Position(x: positionX, y: positionY);
-            this.type = "wall";
+            this.Type = "wall";
         }
 
         

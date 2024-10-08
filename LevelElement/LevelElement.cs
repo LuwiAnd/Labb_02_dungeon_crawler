@@ -6,7 +6,7 @@ namespace Labb_02_dungeon_crawler
     // assembly (projekt som man gjort build på).
     public abstract class LevelElement
     {
-        public string type;
+        public string Type { get; set; }
 
         // abstract om jag vill att jag måste override:a
         // virtual om jag vill att det ska gå att override:a

@@ -250,7 +250,16 @@ namespace Labb_02_dungeon_crawler
             int heroAttack = AttackDice.Throw();
             int enemyDefence = enemy.DefenceDice.Throw();
             int enemyDamage = heroAttack - enemyDefence;
-            if(enemyDamage > 0) { enemy.HP -= enemyDamage; }
+            if (enemyDamage < 0) { enemyDamage = 0; }
+            //if(enemyDamage > 0) { enemy.HP -= enemyDamage; }
+            enemy.HP -= enemyDamage;
+            (int left, int top) = Console.GetCursorPosition();
+            Console.SetCursorPosition(0, 0);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Player throw dices: {this.AttackDice.ToString()} => {heroAttack}. {enemy.Type} throw: {enemy.AttackDice.ToString()}. Damage = {enemyDamage}.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(left, top);
+            
         }
 
         public void Move(string direction)

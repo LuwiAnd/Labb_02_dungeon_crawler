@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace Labb_02_dungeon_crawler
 {
@@ -33,7 +34,15 @@ namespace Labb_02_dungeon_crawler
             int attack = this.AttackDice.Throw();
             int defence = hero.DefenceDice.Throw();
             int damage = attack - defence;
-            if(damage > 0) { hero.HP -= damage; }
+            if(damage < 0) { damage = 0; }
+            hero.HP -= damage;
+
+            (int left, int top) = Console.GetCursorPosition();
+            Console.SetCursorPosition(0, 1);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{this.Type} throws dices: {this.AttackDice.ToString()} => {attack}. Hero throws: {hero.DefenceDice.ToString()}. Damage = {damage}.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(left, top);
         }
     }
 }

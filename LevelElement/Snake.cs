@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,7 @@ namespace Labb_02_dungeon_crawler
         {
             //this._position = position;
             this.Position = new Position(x: positionX, y: positionY);
+            this.Color = ConsoleColor.Green;
             this.HP = 25;
             this.Type = "snake";
             this.AttackDice = new Dice(numberOfDice: 3, sidesPerDice: 4, modifier: 2);
@@ -39,7 +41,80 @@ namespace Labb_02_dungeon_crawler
 
         public override void Draw()
         {
-            throw new NotImplementedException();
+            (int left, int top) = Console.GetCursorPosition();
+            Console.SetCursorPosition(
+                this.Position.X + GeneralDungeonFunctions.mapDisplacementX, 
+                this.Position.Y + GeneralDungeonFunctions.mapDisplacementY
+            );
+            Console.ForegroundColor = this.Color;
+            Console.Write(GeneralDungeonFunctions.snakeChar.ToString());
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(left, top);
+        }
+
+        //public bool Move(string direction, List<LevelElement> elements)
+            //bool snakeMoved = false;
+            //Position adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(this.Position, direction);
+        public void Move(Hero hero, List<LevelElement> elements)
+        {
+            bool snakeIsNextToHero = false;
+            string herosRelativePosition = "";
+            string[] relativePositions = new string[]
+            {
+                "above",
+                "below",
+                "left",
+                "right"
+            };
+            Position adjacentPosition;
+            foreach(string relativePosition in relativePositions)
+            {
+                adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(this.Position, relativePosition);
+                if(adjacentPosition.X == hero.Position.X && adjacentPosition.Y == hero.Position.Y)
+                {
+                    snakeIsNextToHero = true;
+                    herosRelativePosition = relativePosition;
+                }
+            }
+
+            adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(
+                    this.Position,
+                    this.ReverseRelativePosition(herosRelativePosition)
+                );
+            bool possibleToFlee = GeneralDungeonFunctions.isPositionEmpty(
+                adjacentPosition,
+                elements
+            );
+            if (possibleToFlee)
+            {
+                GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y);
+                this.Position = adjacentPosition;
+                this.Draw();
+            }
+            //return snakeMoved;
+        }
+
+        private string ReverseRelativePosition(string relativePosition)
+        {
+            switch (relativePosition)
+            {
+                case "above":
+                    return "below";
+                    break;
+                case "below":
+                    return "above";
+                    break;
+                case "left":
+                    return "right";
+                    break;
+                case "right":
+                    return "left";
+                    break;
+                default: 
+                    return "";
+                    break;
+            }
         }
     }
 }

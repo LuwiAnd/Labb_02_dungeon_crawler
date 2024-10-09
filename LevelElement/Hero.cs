@@ -67,6 +67,9 @@ namespace Labb_02_dungeon_crawler
             ConsoleKeyInfo cki;
             int intervalTime = 50;
             bool okDirection = false;
+            bool enemyInTheWay = false;
+            bool enemyMovedAway = false;
+
             //while (!okDirection && currentWaitTime <= maxWaitTime)
             while (!okDirection)
             {
@@ -84,10 +87,13 @@ namespace Labb_02_dungeon_crawler
                     //Console.WriteLine("DDDDD");
                     cki = Console.ReadKey();
                     //Console.WriteLine("You pressed the '{0}' key", cki.Key);
+                    okDirection = true;
+                    enemyInTheWay = false;
+                    enemyMovedAway = false;
 
                     if (cki.Key == ConsoleKey.UpArrow)
                     {
-                        okDirection = true;
+                        //okDirection = true;
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
@@ -121,7 +127,7 @@ namespace Labb_02_dungeon_crawler
 
                     if (cki.Key == ConsoleKey.LeftArrow)
                     {
-                        okDirection = true;
+                        //okDirection = true;
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
@@ -151,7 +157,7 @@ namespace Labb_02_dungeon_crawler
                     }
                     if (cki.Key == ConsoleKey.DownArrow)
                     {
-                        okDirection = true;
+                        //okDirection = true;
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
@@ -182,11 +188,12 @@ namespace Labb_02_dungeon_crawler
                     }
                     if (cki.Key == ConsoleKey.RightArrow)
                     {
-                        okDirection = true;
+                        //okDirection = true;
                         //bool heroHasElementAbove = false;
                         //int debugIndex = 0;
                         foreach (var element in elements)
                         {
+
                             //debugIndex++;
                             //Console.WriteLine(debugIndex);
                             //Console.WriteLine($"Length of elements: {elements.Count}");
@@ -199,10 +206,13 @@ namespace Labb_02_dungeon_crawler
                             //if (element.Position[0] == (this.Position[0] + 1) && element.Position[1] == this.Position[1])
                             if (element.Position.X == (this.Position.X + 1) && element.Position.Y == this.Position.Y)
                             {
+                                enemyInTheWay = true;
                                 if (element.Type != "wall")
                                 {
                                     Enemy enemy = (Enemy)element;
-                                    // Attack the enemy.
+                                    // Jag hade tolkat ormens rörelser fel. Nedanstående bortkommenterade kodrad behövs inte för att ormarna
+                                    // kan uppdateras i game-loopen. Hero ska aldrig stå bredvid ormarna om ormarna inte har något ivägen.
+                                    //if(element.Type == "snake") { Snake snake = (Snake)enemy; enemyInTheWay = !snake.Move("right", elements); }
                                     Attack(enemy);
                                     if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
@@ -213,7 +223,7 @@ namespace Labb_02_dungeon_crawler
                             }
 
                         }
-                        if (okDirection)
+                        if (okDirection && !enemyInTheWay)
                         {
                             //this.Position[0]++;
                             //this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));

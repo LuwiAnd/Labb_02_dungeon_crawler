@@ -86,5 +86,30 @@ namespace Labb_02_dungeon_crawler
                 }
             }
         }
+
+        public void MoveSnakes()
+        {
+            foreach(LevelElement element in this.Elements)
+            {
+                if(element.Type == "snake")
+                {
+                    //Console.WriteLine("Moving a snake!");
+                    Snake snake = (Snake)element;
+                    snake.Move(this.hero, this.Elements);
+                }
+            }
+        }
+
+        public void MoveRats()
+        {
+            foreach (LevelElement element in this.Elements)
+            {
+                if (element.Type == "rat")
+                {
+                    Rat rat = (Rat)element;
+                    rat.Move(this.hero, this.Elements);
+                }
+            }
+        }
     }
 }

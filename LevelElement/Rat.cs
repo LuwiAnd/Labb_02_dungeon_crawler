@@ -31,15 +31,69 @@ namespace Labb_02_dungeon_crawler
         {
             //this._position = position;
             this.Position = new Position(x: positionX, y: positionY);
+            this.Color = ConsoleColor.Red;
             this.HP = 10;
             this.Type = "rat";
             this.AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
             this.DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
+
         }
 
         public override void Draw()
         {
-            throw new NotImplementedException();
+            (int left, int top) = Console.GetCursorPosition();
+            Console.SetCursorPosition(
+                this.Position.X + GeneralDungeonFunctions.mapDisplacementX,
+                this.Position.Y + GeneralDungeonFunctions.mapDisplacementY
+            );
+            Console.ForegroundColor = this.Color;
+            Console.Write(GeneralDungeonFunctions.ratChar.ToString());
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(left, top);
+        }
+
+        public void Move(Hero hero, List<LevelElement> elements)
+        {
+            //string[] directions = new string[]
+            //{
+            //    "up",
+            //    "down",
+            //    "left",
+            //    "right"
+            //};
+            //Random random = new Random();
+            //string direction = directions[random.Next(directions.Length)];
+
+            string[] relativePositions = new string[]
+            {
+                "above",
+                "below",
+                "left",
+                "right"
+            };
+            Random random = new Random();
+            string nextRelativePosition = relativePositions[random.Next(relativePositions.Length)];
+
+            Position adjacentPosition;
+            adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(this.Position, nextRelativePosition);
+            if (adjacentPosition.X == hero.Position.X && adjacentPosition.Y == hero.Position.Y)
+            {
+                this.AttackHero(hero);
+                return;
+            }
+
+            
+            bool possibleToMove = GeneralDungeonFunctions.isPositionEmpty(
+                adjacentPosition,
+                elements
+            );
+            if (possibleToMove)
+            {
+                GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y);
+                this.Position = adjacentPosition;
+                this.Draw();
+            }
         }
     }
 }

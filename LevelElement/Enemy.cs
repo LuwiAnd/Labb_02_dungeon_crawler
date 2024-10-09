@@ -40,9 +40,10 @@ namespace Labb_02_dungeon_crawler
             (int left, int top) = Console.GetCursorPosition();
             Console.SetCursorPosition(0, 1);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"{this.Type} throws dices: {this.AttackDice.ToString()} => {attack}. Hero throws: {hero.DefenceDice.ToString()}. Damage = {damage}.");
+            Console.WriteLine($"{this.Type} throws dices: {this.AttackDice.ToString()} => {attack}. Hero throws: {hero.DefenceDice.ToString()} => {defence}. Damage = {damage}.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(left, top);
         }
+
     }
 }

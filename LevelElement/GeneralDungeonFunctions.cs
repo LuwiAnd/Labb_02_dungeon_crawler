@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,17 @@ namespace Labb_02_dungeon_crawler
 
         public const int mapDisplacementX = 0;
         public const int mapDisplacementY = 2;
+
+        public const double visionRange = 5;
+
+        public static bool IsVisible(Position p1, Position p2)
+        {
+            double SquaredXDistance = Math.Pow((double)(p1.X - p2.X), 2.0);
+            double SquaredYDistance = Math.Pow((double)(p1.Y - p2.Y), 2.0);
+            double SquaredVisionRange = Math.Pow(GeneralDungeonFunctions.visionRange, 2.0);
+
+            return (SquaredXDistance + SquaredYDistance < SquaredVisionRange);
+        }
 
         public static Position GetAdjacentPosition(Position position, string relativePosition)
         {

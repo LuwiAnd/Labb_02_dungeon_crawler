@@ -30,7 +30,7 @@ namespace Labb_02_dungeon_crawler
                     //LevelElement le;
                     while((line = sr.ReadLine()) != null)
                     {
-                        Console.WriteLine(line);
+                        //Console.WriteLine(line);
                         for(int x = 0; x < line.Length; x++)
                         {
                             //currentPosition = new int[] { x, y };
@@ -87,7 +87,20 @@ namespace Labb_02_dungeon_crawler
             }
         }
 
-        public void MoveSnakes()
+        public void UpdateWalls()
+        {
+            foreach (LevelElement element in this.Elements)
+            {
+                if (element.Type == "wall")
+                {
+                    //Console.WriteLine("Moving a snake!");
+                    Wall wall = (Wall)element;
+                    wall.Update(this.hero);
+                }
+            }
+        }
+
+        public void UpdateSnakes()
         {
             foreach(LevelElement element in this.Elements)
             {
@@ -95,19 +108,30 @@ namespace Labb_02_dungeon_crawler
                 {
                     //Console.WriteLine("Moving a snake!");
                     Snake snake = (Snake)element;
-                    snake.Move(this.hero, this.Elements);
+                    snake.Update(this.hero, this.Elements);
                 }
             }
         }
 
-        public void MoveRats()
+        public void UpdateRats()
         {
             foreach (LevelElement element in this.Elements)
             {
                 if (element.Type == "rat")
                 {
                     Rat rat = (Rat)element;
-                    rat.Move(this.hero, this.Elements);
+                    rat.Update(this.hero, this.Elements);
+                }
+            }
+        }
+
+        public void EraseDeadElements()
+        {
+            foreach(var element in this.Elements)
+            {
+                if(element is Enemy enemy && enemy.HP <= 0)
+                {
+                    GeneralDungeonFunctions.Erase(enemy.Position.X, enemy.Position.Y);
                 }
             }
         }

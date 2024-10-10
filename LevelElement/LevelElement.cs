@@ -8,6 +8,8 @@ namespace Labb_02_dungeon_crawler
     {
         public string Type { get; set; }
 
+        public bool IsVisible { get; set; }
+
         // abstract om jag vill att jag måste override:a
         // virtual om jag vill att det ska gå att override:a
         //public abstract int[] Position { 

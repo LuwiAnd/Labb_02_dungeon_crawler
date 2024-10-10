@@ -22,9 +22,11 @@ namespace Labb_02_dungeon_crawler
         //Dice AttackDice = new Dice(numberOfDice: 3, sidesPerDice: 4, modifier: 2);
         //Dice DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 8, modifier: 5);
 
-        public override void Update()
+        public override void Update(Hero hero, List<LevelElement> elements)
         {
-            Console.WriteLine("Uppdaterar ormen");
+            this.Move(hero, elements);
+            this.IsVisible = GeneralDungeonFunctions.IsVisible(hero.Position, this.Position);
+            if (!this.IsVisible) { GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y); }
         }
 
         //public Snake(int[] position)

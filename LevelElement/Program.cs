@@ -34,9 +34,14 @@ namespace Labb_02_dungeon_crawler
                 //Console.WriteLine(test++);
                 //levelData.hero.Erase();
                 levelData.hero.Update(levelData.Elements);
-                levelData.MoveSnakes();
-                levelData.MoveRats();
+
+                levelData.UpdateWalls();
+                levelData.UpdateSnakes();
+                levelData.UpdateRats();
+
+                
                 levelData.hero.Draw();
+                levelData.EraseDeadElements();
                 levelData.RemoveElements();
             }
         }

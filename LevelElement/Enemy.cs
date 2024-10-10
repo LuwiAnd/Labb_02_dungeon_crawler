@@ -21,7 +21,7 @@ namespace Labb_02_dungeon_crawler
         //protected AttackDice;
         //protected DefenceDice;
 
-        public abstract void Update();
+        public abstract void Update(Hero hero, List<LevelElement> elements);
         public virtual bool Defend(int damage)
         {
             this.HP -= damage;
@@ -40,7 +40,7 @@ namespace Labb_02_dungeon_crawler
             (int left, int top) = Console.GetCursorPosition();
             Console.SetCursorPosition(0, 1);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"{this.Type} throws dices: {this.AttackDice.ToString()} => {attack}. Hero throws: {hero.DefenceDice.ToString()} => {defence}. Damage = {damage}.");
+            Console.WriteLine($"{this.Type} (HP: {this.HP}) throws dices: {this.AttackDice.ToString()} => {attack}. Hero (HP: {hero.HP}) throws: {hero.DefenceDice.ToString()} => {defence}. Damage = {damage}.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(left, top);
         }

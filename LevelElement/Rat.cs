@@ -21,9 +21,11 @@ namespace Labb_02_dungeon_crawler
         //Dice AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
         //Dice DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
 
-        public override void Update()
+        public override void Update(Hero hero, List<LevelElement> elements)
         {
-            Console.WriteLine("Uppdaterar råttan");
+            this.Move(hero: hero, elements: elements);
+            this.IsVisible = GeneralDungeonFunctions.IsVisible(hero.Position, this.Position);
+            if (!this.IsVisible) { GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y); }
         }
 
         //public Rat(int[] position)
@@ -36,7 +38,7 @@ namespace Labb_02_dungeon_crawler
             this.Type = "rat";
             this.AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
             this.DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
-
+            this.IsVisible = false;
         }
 
         public override void Draw()

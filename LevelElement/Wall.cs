@@ -43,8 +43,16 @@ namespace Labb_02_dungeon_crawler
             //this.Position = position;
             this.Position = new Position(x: positionX, y: positionY);
             this.Type = "wall";
+            this.isVisible = false;
         }
 
-        
+        public void Update(Hero hero)
+        {
+            if(GeneralDungeonFunctions.IsVisible(hero.Position, this.Position))
+            {
+                this.isVisible = true;
+                this.Draw();
+            }
+        }
     }
 }

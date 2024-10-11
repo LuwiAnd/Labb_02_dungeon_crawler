@@ -26,9 +26,8 @@ namespace Labb_02_dungeon_crawler
                 using(StreamReader sr = new StreamReader(fileName))
                 {
                     string line;
-                    //int x = 0;
                     int y = 0;
-                    int[] currentPosition;
+                    //int[] currentPosition;
                     //LevelElement le;
                     while((line = sr.ReadLine()) != null)
                     {

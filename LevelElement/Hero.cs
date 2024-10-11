@@ -25,7 +25,9 @@ namespace Labb_02_dungeon_crawler
         {
             this.Position = p;
         }
-        public string Type { get; set; }
+
+        // Jag behöver kolla upp vad "new" nyckelordet betyder här!! ??!!???
+        public new string Type { get; set; }
         public double HP { get; set; }
 
         public Dice AttackDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 2);
@@ -66,8 +68,8 @@ namespace Labb_02_dungeon_crawler
             ConsoleKeyInfo cki;
             int intervalTime = 50;
             bool okDirection = false;
-            bool enemyInTheWay = false;
-            bool enemyMovedAway = false;
+            //bool enemyInTheWay = false;
+            //bool enemyMovedAway = false;
 
             //while (!okDirection && currentWaitTime <= maxWaitTime)
             while (!okDirection)
@@ -87,8 +89,8 @@ namespace Labb_02_dungeon_crawler
                     cki = Console.ReadKey();
                     //Console.WriteLine("You pressed the '{0}' key", cki.Key);
                     okDirection = true;
-                    enemyInTheWay = false;
-                    enemyMovedAway = false;
+                    //enemyInTheWay = false;
+                    //enemyMovedAway = false;
 
                     if (cki.Key == ConsoleKey.UpArrow)
                     {

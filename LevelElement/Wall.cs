@@ -52,7 +52,7 @@ namespace Labb_02_dungeon_crawler
             if(GeneralDungeonFunctions.IsVisible(hero.Position, this.Position))
             {
                 //this.isVisible = true;
-                this.IsVisible= true;
+                this.IsVisible = true;
                 this.Draw();
             }
         }

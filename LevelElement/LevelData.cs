@@ -17,6 +17,8 @@ namespace Labb_02_dungeon_crawler
 
         public Hero hero;
 
+        public int TurnsUntilClearingMessages { get; set; }
+
         public void Load(string fileName)
         {
             try
@@ -106,9 +108,9 @@ namespace Labb_02_dungeon_crawler
             {
                 if(element.Type == "snake")
                 {
-                    //Console.WriteLine("Moving a snake!");
                     Snake snake = (Snake)element;
-                    snake.Update(this.hero, this.Elements);
+                    //snake.Update(this.hero, this.Elements);
+                    snake.Update(this.hero, this);
                 }
             }
         }
@@ -120,7 +122,8 @@ namespace Labb_02_dungeon_crawler
                 if (element.Type == "rat")
                 {
                     Rat rat = (Rat)element;
-                    rat.Update(this.hero, this.Elements);
+                    //rat.Update(this.hero, this.Elements);
+                    rat.Update(this.hero, this);
                 }
             }
         }

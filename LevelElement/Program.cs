@@ -6,44 +6,47 @@ namespace Labb_02_dungeon_crawler
     {
         private static void Main(string[] args)
         {
-            //Enemy le = new Enemy();
-            //Dice dice = new Dice();
             Console.WriteLine("Player: Luwi");
             Console.WriteLine("Enemy: ????");
 
             LevelData levelData = new LevelData();
             levelData.Load("C:\\Users\\ludwi\\source\\repos\\Labb_02_dungeon_crawler\\LevelElement\\bin\\Debug\\net8.0\\Level1.txt");
+            levelData.TurnsUntilClearingMessages = 3;
 
-            //Dice myTestDice = new Dice(numberOfDice: 1, sidesPerDice: 3, modifier: 10);
-            //for(int i = 0; i < 30; i++)
-            //{
-
-            //    Console.WriteLine(myTestDice.Throw());
-            //}
-
-            //int test = 0;
-            //foreach( var element in levelData.Elements)
-            //{
-            //    Console.WriteLine(test++);
-            //    Console.WriteLine($"element.Position = {element.Position[0]}, {element.Position[1]}");
-            //}
-
-            int test = 0;
-            while (true)
+            bool gameOver = false;
+            while (!gameOver)
             {
-                //Console.WriteLine(test++);
-                //levelData.hero.Erase();
-                levelData.hero.Update(levelData.Elements);
+                if (levelData.TurnsUntilClearingMessages > 0) levelData.TurnsUntilClearingMessages--;
+                else GeneralDungeonFunctions.ClearConsoleMessages();
+
+                //levelData.hero.Update(levelData.Elements);
+                levelData.hero.Update(levelData);
+                if (CheckIsHeroDead(levelData.hero)) break;
 
                 levelData.UpdateWalls();
                 levelData.UpdateSnakes();
+                if (CheckIsHeroDead(levelData.hero)) break;
                 levelData.UpdateRats();
+                if (CheckIsHeroDead(levelData.hero)) break;
 
-                
                 levelData.hero.Draw();
                 levelData.EraseDeadElements();
                 levelData.RemoveElements();
             }
+        }
+
+        private static bool CheckIsHeroDead(Hero hero)
+        {
+            if (hero.HP <= 0)
+            {
+                Console.SetCursorPosition(10, 22);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("You died! Game over!");
+                Console.ForegroundColor = ConsoleColor.White;
+                //break;
+                return true;
+            }
+            return false;
         }
     }
 }

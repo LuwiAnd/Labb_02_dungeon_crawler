@@ -21,9 +21,10 @@ namespace Labb_02_dungeon_crawler
         //Dice AttackDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 3);
         //Dice DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 6, modifier: 1);
 
-        public override void Update(Hero hero, List<LevelElement> elements)
+        //public override void Update(Hero hero, List<LevelElement> elements)
+        public override void Update(Hero hero, LevelData levelData)
         {
-            this.Move(hero: hero, elements: elements);
+            this.Move(hero: hero, levelData: levelData);
             this.IsVisible = GeneralDungeonFunctions.IsVisible(hero.Position, this.Position);
             if (!this.IsVisible) { GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y); }
         }
@@ -55,17 +56,13 @@ namespace Labb_02_dungeon_crawler
             Console.SetCursorPosition(left, top);
         }
 
-        public void Move(Hero hero, List<LevelElement> elements)
+        public void Move(Hero hero, LevelData levelData)
         {
-            //string[] directions = new string[]
-            //{
-            //    "up",
-            //    "down",
-            //    "left",
-            //    "right"
-            //};
-            //Random random = new Random();
-            //string direction = directions[random.Next(directions.Length)];
+            // I changed from using "List<LevelElement> elements" as a parameter to using "LevelData levelData", but 
+            // I don't have time to fix all such things this close to deadline, otherwise I would use "levelData.Elements" 
+            // instead of "elements" everywhere in this function and done many other such changes thoughout this project.
+
+            List<LevelElement> elements = levelData.Elements;
 
             string[] relativePositions = new string[]
             {
@@ -82,6 +79,7 @@ namespace Labb_02_dungeon_crawler
             if (adjacentPosition.X == hero.Position.X && adjacentPosition.Y == hero.Position.Y)
             {
                 this.AttackHero(hero);
+                if(hero.HP > 0) { hero.Attack(levelData, this); }
                 return;
             }
 

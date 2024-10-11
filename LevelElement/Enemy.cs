@@ -21,7 +21,8 @@ namespace Labb_02_dungeon_crawler
         //protected AttackDice;
         //protected DefenceDice;
 
-        public abstract void Update(Hero hero, List<LevelElement> elements);
+        //public abstract void Update(Hero hero, List<LevelElement> elements);
+        public abstract void Update(Hero hero, LevelData levelData);
         public virtual bool Defend(int damage)
         {
             this.HP -= damage;

@@ -18,6 +18,8 @@ namespace Labb_02_dungeon_crawler
         public const int mapDisplacementX = 0;
         public const int mapDisplacementY = 2;
 
+        public const int maxConsoleMessageLenght = 120;
+
         public const double visionRange = 5;
 
         public static bool IsVisible(Position p1, Position p2)
@@ -55,6 +57,18 @@ namespace Labb_02_dungeon_crawler
             Console.SetCursorPosition(x + GeneralDungeonFunctions.mapDisplacementX, y + GeneralDungeonFunctions.mapDisplacementY);
             Console.Write(" ");
             Console.SetCursorPosition(left, top);
+        }
+
+        public static void ClearConsoleMessages()
+        {
+            string clearConsoleString = "   ".PadLeft(maxConsoleMessageLenght, ' ');
+            (int left, int top) = Console.GetCursorPosition();
+            Console.SetCursorPosition(0, 0);
+            Console.Write(clearConsoleString);
+            Console.SetCursorPosition(0, 1);
+            Console.Write(clearConsoleString);
+            Console.SetCursorPosition(left, top);
+
         }
     }
 }

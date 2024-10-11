@@ -22,9 +22,10 @@ namespace Labb_02_dungeon_crawler
         //Dice AttackDice = new Dice(numberOfDice: 3, sidesPerDice: 4, modifier: 2);
         //Dice DefenceDice = new Dice(numberOfDice: 1, sidesPerDice: 8, modifier: 5);
 
-        public override void Update(Hero hero, List<LevelElement> elements)
+        //public override void Update(Hero hero, List<LevelElement> elements)
+        public override void Update(Hero hero, LevelData levelData)
         {
-            this.Move(hero, elements);
+            this.Move(hero, levelData);
             this.IsVisible = GeneralDungeonFunctions.IsVisible(hero.Position, this.Position);
             if (!this.IsVisible) { GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y); }
         }
@@ -58,9 +59,13 @@ namespace Labb_02_dungeon_crawler
         //public bool Move(string direction, List<LevelElement> elements)
             //bool snakeMoved = false;
             //Position adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(this.Position, direction);
-        public void Move(Hero hero, List<LevelElement> elements)
+        //public void Move(Hero hero, List<LevelElement> elements)
+        public void Move(Hero hero, LevelData levelData)
         {
-            bool snakeIsNextToHero = false;
+
+            List<LevelElement> elements = levelData.Elements;
+
+            //bool snakeIsNextToHero = false;
             string herosRelativePosition = "";
             string[] relativePositions = new string[]
             {
@@ -75,26 +80,29 @@ namespace Labb_02_dungeon_crawler
                 adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(this.Position, relativePosition);
                 if(adjacentPosition.X == hero.Position.X && adjacentPosition.Y == hero.Position.Y)
                 {
-                    snakeIsNextToHero = true;
+                    //snakeIsNextToHero = true;
                     herosRelativePosition = relativePosition;
                 }
             }
 
-            adjacentPosition = GeneralDungeonFunctions.GetAdjacentPosition(
+            Position fleePosition = GeneralDungeonFunctions.GetAdjacentPosition(
                     this.Position,
                     this.ReverseRelativePosition(herosRelativePosition)
                 );
             bool possibleToFlee = GeneralDungeonFunctions.isPositionEmpty(
-                adjacentPosition,
+                fleePosition,
                 elements
             );
             if (possibleToFlee)
             {
                 GeneralDungeonFunctions.Erase(this.Position.X, this.Position.Y);
-                this.Position = adjacentPosition;
+                this.Position = fleePosition;
                 this.Draw();
             }
-            //return snakeMoved;
+            else
+            {
+                this.Draw();
+            }
         }
 
         private string ReverseRelativePosition(string relativePosition)
@@ -103,19 +111,19 @@ namespace Labb_02_dungeon_crawler
             {
                 case "above":
                     return "below";
-                    break;
+                    //break; // Eftersom koden ovan är ett return-statement, så behövs ej break.
                 case "below":
                     return "above";
-                    break;
+                    //break;
                 case "left":
                     return "right";
-                    break;
+                    //break;
                 case "right":
                     return "left";
-                    break;
+                    //break;
                 default: 
                     return "";
-                    break;
+                    //break;
             }
         }
     }

@@ -7,7 +7,7 @@ namespace Labb_02_dungeon_crawler
         // Man ska i princip aldrig ha public fields som denna.
         //public new string type = "wall";
         //public string type;
-        private bool isVisible = false;
+        //private bool isVisible = false;
 
         // Utan override, så skapas det en extra Position-property här, så att det 
         // hade funnits en Position i föräldraklassen och en i denna klass.
@@ -43,14 +43,16 @@ namespace Labb_02_dungeon_crawler
             //this.Position = position;
             this.Position = new Position(x: positionX, y: positionY);
             this.Type = "wall";
-            this.isVisible = false;
+            //this.isVisible = false;
+            this.IsVisible = false;
         }
 
         public void Update(Hero hero)
         {
             if(GeneralDungeonFunctions.IsVisible(hero.Position, this.Position))
             {
-                this.isVisible = true;
+                //this.isVisible = true;
+                this.IsVisible= true;
                 this.Draw();
             }
         }

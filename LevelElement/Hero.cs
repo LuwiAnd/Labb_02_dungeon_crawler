@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Labb_02_dungeon_crawler
 {
@@ -30,10 +31,7 @@ namespace Labb_02_dungeon_crawler
         public Dice AttackDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 2);
         public Dice DefenceDice = new Dice(numberOfDice: 2, sidesPerDice: 6, modifier: 0);
 
-        public void Update()
-        {
-            Console.WriteLine("Uppdaterar spelaren");
-        }
+        
 
         //public Hero(int[] position)
         public Hero(int positionX, int positionY)
@@ -59,11 +57,12 @@ namespace Labb_02_dungeon_crawler
 
         }
 
-        public void Update(List<LevelElement> elements)
+        //public void Update(List<LevelElement> elements)
+        public void Update(LevelData levelData)
         {
-            
 
-            //Console.WriteLine("AAAAA");
+            List<LevelElement> elements = levelData.Elements;
+
             ConsoleKeyInfo cki;
             int intervalTime = 50;
             bool okDirection = false;
@@ -93,6 +92,7 @@ namespace Labb_02_dungeon_crawler
 
                     if (cki.Key == ConsoleKey.UpArrow)
                     {
+                        /*
                         //okDirection = true;
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
@@ -100,13 +100,12 @@ namespace Labb_02_dungeon_crawler
                             //if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] - 1))
                             if (element.Position.X == this.Position.X && element.Position.Y == (this.Position.Y - 1))
                             {
-                                Console.WriteLine($"Found element above! Type: {element.Type}");
-                                //heroHasElementAbove = true;
+                                enemyInTheWay = true;
                                 if (element.Type != "wall")
                                 {
                                     Enemy enemy = (Enemy)element;
                                     // Attack the enemy.
-                                    Attack(enemy);
+                                    Attack(levelData, enemy);
                                     if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
@@ -117,28 +116,28 @@ namespace Labb_02_dungeon_crawler
                             }
 
                         }
-                        if (okDirection)
+                        if (okDirection && !enemyInTheWay)
                         {
                             //this.Position.Y--;
                             //this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y - 1));
                             this.Move("up");
                         }
-                    }
-
-                    if (cki.Key == ConsoleKey.LeftArrow)
+                        */
+                        okDirection = this.HandleArrowKeys(direction: "up", levelData: levelData);
+                    }else if (cki.Key == ConsoleKey.LeftArrow)
                     {
+                        /*
                         //okDirection = true;
                         //bool heroHasElementAbove = false;
                         foreach (var element in elements)
                         {
                             if (element.Position.X == (this.Position.X - 1) && element.Position.Y == this.Position.Y)
                             {
-                                //heroHasElementAbove = true;
+                                enemyInTheWay = true;
                                 if (element.Type != "wall")
                                 {
                                     Enemy enemy = (Enemy)element;
-                                    // Attack the enemy.
-                                    Attack(enemy);
+                                    Attack(levelData, enemy);
                                     if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
@@ -148,28 +147,28 @@ namespace Labb_02_dungeon_crawler
                             }
 
                         }
-                        if (okDirection)
+                        if (okDirection && !enemyInTheWay)
                         {
                             //this.Position[0]--;
                             //this.SetPosition(new Position(x: this.Position.X - 1, y: this.Position.Y));
                             this.Move("left");
                         }
-                    }
-                    if (cki.Key == ConsoleKey.DownArrow)
+                        */
+                        okDirection = this.HandleArrowKeys(direction: "left", levelData: levelData);
+                    }else if (cki.Key == ConsoleKey.DownArrow)
                     {
-                        //okDirection = true;
-                        //bool heroHasElementAbove = false;
+                        /*
                         foreach (var element in elements)
                         {
                             //if (element.Position[0] == this.Position[0] && element.Position[1] == (this.Position[1] + 1))
                             if (element.Position.X == this.Position.X && element.Position.Y == (this.Position.Y + 1))
                             {
-                                //heroHasElementAbove = true;
+                                enemyInTheWay = true;
                                 if (element.Type != "wall")
                                 {
                                     Enemy enemy = (Enemy)element;
                                     // Attack the enemy.
-                                    Attack(enemy);
+                                    Attack(levelData, enemy);
                                     if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
@@ -179,30 +178,23 @@ namespace Labb_02_dungeon_crawler
                             }
 
                         }
-                        if (okDirection)
+                        if (okDirection && !enemyInTheWay)
                         {
                             //this.Position[1]++;
                             //this.SetPosition(new Position(x: this.Position.X, y: this.Position.Y + 1));
                             this.Move("down");
                         }
-                    }
-                    if (cki.Key == ConsoleKey.RightArrow)
+                        */
+
+                        okDirection = this.HandleArrowKeys(direction: "down", levelData: levelData);
+                    }else if (cki.Key == ConsoleKey.RightArrow)
                     {
+                        /* 
                         //okDirection = true;
                         //bool heroHasElementAbove = false;
                         //int debugIndex = 0;
                         foreach (var element in elements)
                         {
-
-                            //debugIndex++;
-                            //Console.WriteLine(debugIndex);
-                            //Console.WriteLine($"Length of elements: {elements.Count}");
-                            //Console.WriteLine(element);
-                            //Console.WriteLine(element.Color);
-                            //Console.WriteLine($"Hero position: x = {this.Position[0]}, y = {this.Position[1]}");
-                            //Console.WriteLine(element.Position[0]);
-                            //Console.WriteLine(element.Position[1]);
-                            
                             //if (element.Position[0] == (this.Position[0] + 1) && element.Position[1] == this.Position[1])
                             if (element.Position.X == (this.Position.X + 1) && element.Position.Y == this.Position.Y)
                             {
@@ -213,7 +205,7 @@ namespace Labb_02_dungeon_crawler
                                     // Jag hade tolkat ormens rörelser fel. Nedanstående bortkommenterade kodrad behövs inte för att ormarna
                                     // kan uppdateras i game-loopen. Hero ska aldrig stå bredvid ormarna om ormarna inte har något ivägen.
                                     //if(element.Type == "snake") { Snake snake = (Snake)enemy; enemyInTheWay = !snake.Move("right", elements); }
-                                    Attack(enemy);
+                                    Attack(levelData, enemy);
                                     if (enemy.HP > 0) { enemy.AttackHero(this); }
                                 }
                                 else
@@ -229,44 +221,81 @@ namespace Labb_02_dungeon_crawler
                             //this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));
                             this.Move("right");
                         }
+                        */
+                        okDirection = this.HandleArrowKeys(direction: "right", levelData: levelData);
+                    }
+                    else
+                    {
+                        // The user stands still.
+                        okDirection = true;
                     }
                 }
-                //else if (currentWaitTime > maxWaitTime)
-                //{
-                //    break;
-                //}
-
-                //if (
-                //    newDirection == "up" && currentDirection != "down"
-                //    ||
-                //    newDirection == "down" && currentDirection != "up"
-                //    ||
-                //    newDirection == "left" && currentDirection != "right"
-                //    ||
-                //    newDirection == "right" && currentDirection != "left"
-                //)
-                //{
-                //    okDirection = true;
-                //}
-                //else
-                //{
-                //    newDirection = "";
-                //}
             }
         }
 
-        public void Attack(Enemy enemy)
+        private bool HandleArrowKeys(string direction, LevelData levelData)
         {
+            Position positionToMoveTo = this.Position;
+            switch(direction){
+                case "up":
+                    positionToMoveTo.Y -= 1;
+                    break;
+                case "down":
+                    positionToMoveTo.Y += 1;
+                    break;
+                case "left":
+                    positionToMoveTo.X -= 1;
+                    break;
+                case "right":
+                    positionToMoveTo.X += 1;
+                    break;
+            }
+
+            List<LevelElement> elements = levelData.Elements;
+            bool enemyInTheWay = false;
+            bool okDirection = true;
+            foreach (var element in elements)
+            {
+                if (element.Position.X == positionToMoveTo.X && element.Position.Y == positionToMoveTo.Y)
+                {
+                    enemyInTheWay = true;
+                    if (element.Type != "wall")
+                    {
+                        Enemy enemy = (Enemy)element;
+                        Attack(levelData, enemy);
+                        if (enemy.HP > 0) { enemy.AttackHero(this); }
+                    }
+                    else
+                    {
+                        okDirection = false;
+                    }
+                }
+
+            }
+            if (okDirection && !enemyInTheWay)
+            {
+                //this.Position[0]++;
+                //this.SetPosition(new Position(x: this.Position.X + 1, y: this.Position.Y));
+                //this.Move("right");
+                this.Move(direction);
+            }
+
+            return okDirection;
+        }
+
+        public void Attack(LevelData levelData, Enemy enemy)
+        {
+            levelData.TurnsUntilClearingMessages = 3;
             int heroAttack = AttackDice.Throw();
             int enemyDefence = enemy.DefenceDice.Throw();
             int enemyDamage = heroAttack - enemyDefence;
             if (enemyDamage < 0) { enemyDamage = 0; }
-            //if(enemyDamage > 0) { enemy.HP -= enemyDamage; }
             enemy.HP -= enemyDamage;
+
             (int left, int top) = Console.GetCursorPosition();
             Console.SetCursorPosition(0, 0);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Player (HP: {this.HP}) throw dices: {this.AttackDice.ToString()} => {heroAttack}. {enemy.Type} (HP: {enemy.HP}) throw: {enemy.AttackDice.ToString()} => {enemyDefence}. Damage = {enemyDamage}.");
+            Console.WriteLine($"Player (HP: {this.HP}) throw dices: {this.AttackDice.ToString()} => {heroAttack}. {enemy.Type} (HP: {enemy.HP}) throw: {enemy.DefenceDice.ToString()} => {enemyDefence}. Damage = {enemyDamage}.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(left, top);
             
